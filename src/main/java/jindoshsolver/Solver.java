@@ -1,8 +1,12 @@
-import org.chocosolver.solver.Model;
-import org.chocosolver.solver.Solver;
-import org.chocosolver.solver.variables.IntVar;
+package main.java.jindoshsolver;
 
-public class JindoshRiddleSolver
+import org.chocosolver.solver.Model;
+import org.chocosolver.solver.variables.IntVar;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Solver
 {
     private static final int WINSLOW = 0;
     private static final int MARCOLLA = 1;
@@ -127,6 +131,8 @@ public class JindoshRiddleSolver
 
     public static void main(String[] args)
     {
+        SpringApplication.run(Solver.class, args);
+        /*
         Model model = new Model("Jindosh Riddle");
         IntVar[] people = model.intVarArray("People", 5, 0, 4);
         IntVar[] colors = model.intVarArray("Colors", 5, 0, 4);
@@ -338,5 +344,6 @@ public class JindoshRiddleSolver
             count++;
         }
         System.out.println("Number of possible solutions: " + count);
+        */
     }
 }
