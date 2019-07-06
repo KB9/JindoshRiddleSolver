@@ -1,0 +1,16 @@
+.jindosh-riddle-page {
+  background-color: black;
+  width: 100%;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.jindosh-riddle-page > * {
+  margin: auto;
+}
