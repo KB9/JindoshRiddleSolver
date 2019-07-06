@@ -28,3 +28,25 @@
   font-style: italic;
   font-family: "Times New Roman";
 }
+
+.jindosh-riddle-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: nowrap;
+  padding-top: 20px;
+}
+
+.jindosh-riddle-button {
+  background-color: black;
+  border: 1px solid #FFFFFF;
+  color: #FFFFFF;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 24px;
+  font-style: italic;
+  font-family: "Times New Roman";
+  cursor: pointer;
+}

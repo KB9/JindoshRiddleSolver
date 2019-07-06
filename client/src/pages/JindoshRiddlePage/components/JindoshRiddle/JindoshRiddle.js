@@ -151,6 +151,9 @@ class JindoshRiddle extends React.Component {
           <br />
           <p>But who owned each?</p>
         </div>
+        <div className="jindosh-riddle-footer">
+          <button className="jindosh-riddle-button">Solve</button>
+        </div>
       </div>
     );
   }
