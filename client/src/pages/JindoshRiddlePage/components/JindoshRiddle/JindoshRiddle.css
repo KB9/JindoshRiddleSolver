@@ -1,0 +1,28 @@
+.jindosh-riddle-header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: nowrap;
+  padding-bottom: 40px;
+}
+
+.jindosh-riddle-header > p {
+  color: #FFFFFF;
+  font-size: 30px;
+  font-style: italic;
+}
+
+.jindosh-riddle-text {
+  border: 1px solid #FFFFFF;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.jindosh-riddle-text > p {
+  color: #FFFFFF;
+  font-size: 20px;
+  font-style: italic;
+}
