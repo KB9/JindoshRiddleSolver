@@ -89,6 +89,50 @@ class JindoshRiddle extends React.Component {
     );
   }
 
+  stateAsGetParams() {
+    let paramString = "?";
+    const keys = Object.keys(this.state);
+    const size = keys.length;
+    for (let i = 0; i < size; i++) {
+      const key = keys[i];
+      if (this.state.hasOwnProperty(key)) {
+        const pair = key + "=" + this.state[key];
+        paramString += pair;
+        const isNotLastParam = (i < (size - 1));
+        if (isNotLastParam) {
+          paramString += "&";
+        }
+      }
+    }
+    return paramString;
+  }
+
+  solveRiddle(cb) {
+    return fetch("/solve" + this.stateAsGetParams(), {
+      accept: "application/json",
+    })
+      .then(this.checkStatus)
+      .then(this.parseJSON)
+      .then(result => {
+        console.log(result);
+      });
+  }
+
+  checkStatus(response) {
+    if (response.status >= 200 && response.status < 300) {
+      return response;
+    }
+    const error = new Error(`HTTP Error ${response.statusText}`);
+    error.status = response.statusText;
+    error.response = response;
+    console.log(error);
+    throw error;
+  }
+
+  parseJSON(response) {
+    return response.json();
+  }
+
   render() {
     const hatOwnerSelect = this.createSelector("woman", "hatOwner");
     const hatColorSelect = this.createSelector("color", "hatColor");
@@ -152,7 +196,12 @@ class JindoshRiddle extends React.Component {
           <p>But who owned each?</p>
         </div>
         <div className="jindosh-riddle-footer">
-          <button className="jindosh-riddle-button">Solve</button>
+          <button
+            className="jindosh-riddle-button"
+            onClick={() => this.solveRiddle()}
+          >
+            Solve
+          </button>
         </div>
       </div>
     );
