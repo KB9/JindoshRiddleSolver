@@ -1,0 +1,73 @@
+.riddle-solution {
+  animation: fadein 2s;
+  -moz-animation: fadein 2s;
+  -webkit-animation: fadein 2s;
+  -o-animation: fadein 2s;
+}
+
+.riddle-solution-header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: nowrap;
+  padding-bottom: 40px;
+}
+
+.riddle-solution-header > p {
+  color: #FFFFFF;
+  font-size: 30px;
+  font-style: italic;
+  font-family: "Times New Roman";
+}
+
+.riddle-solution-content {
+  color: #FFFFFF;
+  border: 1px solid #FFFFFF;
+  font-size: 20px;
+  font-style: italic;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.riddle-solution-content th {
+  font-weight: bold;
+}
+
+@keyframes fadein {
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
+}
+@-moz-keyframes fadein {
+  /* Firefox */
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
+}
+@-webkit-keyframes fadein {
+  /* Safari and Chrome */
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
+}
+@-o-keyframes fadein {
+  /* Opera */
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
+}
