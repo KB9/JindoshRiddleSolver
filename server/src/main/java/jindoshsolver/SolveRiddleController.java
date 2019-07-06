@@ -10,39 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-/*
-      hatOwner: "",
-      hatColor: "",
-      farLeftWoman: "",
-      jacketColor: "",
-      pairLeftColor: "",
-      pairRightColor: "",
-      spilledDrinkColor: "",
-      spilledDrink: "",
-      entirelyColorLocation: "",
-      entirelyColor: "",
-      braggedAboutHeirloom: "",
-      finerHeirloomLocation: "",
-      prizedHeirloomOwner: "",
-      prizedHeirloom: "",
-      scoffingWomanLocation: "",
-      scoffingWomanHeirloom: "",
-      valuableHeirloom: "",
-      nearSpillInstigatorLocation: "",
-      nearSpillDrink: "",
-      toaster: "",
-      toastDrink: "",
-      tableJumperLocation: "",
-      tableJumperDrink: "",
-      centerDrink: "",
-      storyTeller: "",
-      storyTellerLocation: "",
-      firstHeirloom: "",
-      secondHeirloom: "",
-      thirdHeirloom: "",
-      fourthHeirloom: ""
- */
-
 @RestController
 public class SolveRiddleController
 {
@@ -89,6 +56,18 @@ public class SolveRiddleController
         }
     }
 
+    private static int personId(String person) {
+        switch (person)
+        {
+            case "Lady Winslow": return WINSLOW;
+            case "Doctor Marcolla": return MARCOLLA;
+            case "Countess Contee": return CONTEE;
+            case "Madam Natsiou": return NATSIOU;
+            case "Baroness Finch": return FINCH;
+            default: return -1;
+        }
+    }
+
     private static String color(int id)
     {
         switch (id)
@@ -99,6 +78,19 @@ public class SolveRiddleController
             case BLUE: return "Blue";
             case GREEN: return "Green";
             default: return "Unknown";
+        }
+    }
+
+    private static int colorId(String color)
+    {
+        switch (color)
+        {
+            case "blue": return BLUE;
+            case "green": return GREEN;
+            case "purple": return PURPLE;
+            case "red": return RED;
+            case "white": return WHITE;
+            default: return -1;
         }
     }
 
@@ -115,6 +107,19 @@ public class SolveRiddleController
         }
     }
 
+    private static int drinkId(String drink)
+    {
+        switch (drink)
+        {
+            case "absinthe": return ABSINTHE;
+            case "beer": return BEER;
+            case "whiskey": return WHISKEY;
+            case "wine": return WINE;
+            case "rum": return RUM;
+            default: return -1;
+        }
+    }
+
     private static String place(int id)
     {
         switch (id)
@@ -128,6 +133,19 @@ public class SolveRiddleController
         }
     }
 
+    private static int placeId(String place)
+    {
+        switch (place)
+        {
+            case "Baleton": return BALETON;
+            case "Dabokva": return DABOKVA;
+            case "Dunwall": return DUNWALL;
+            case "Fraeport": return FRAEPORT;
+            case "Karnaca": return KARNACA;
+            default: return -1;
+        }
+    }
+
     private static String item(int id)
     {
         switch (id)
@@ -138,6 +156,19 @@ public class SolveRiddleController
             case MEDAL: return "Medal";
             case TIN: return "Tin";
             default: return "Unknown";
+        }
+    }
+
+    private static int itemId(String item)
+    {
+        switch (item)
+        {
+            case "Bird Pendant": return BIRD;
+            case "Diamond": return DIAMOND;
+            case "Ring": return RING;
+            case "Snuff Tin": return TIN;
+            case "War Medal": return MEDAL;
+            default: return -1;
         }
     }
 
@@ -170,6 +201,39 @@ public class SolveRiddleController
     @RequestMapping(value = "/solve", method = RequestMethod.GET)
     public SolveRiddle solveRiddle(@RequestParam Map<String,String> params)
     {
+        /*
+              hatOwner: "",
+              hatColor: "",
+              farLeftWoman: "",
+              jacketColor: "",
+              pairLeftColor: "",
+              pairRightColor: "",
+              spilledDrinkColor: "",
+              spilledDrink: "",
+              entirelyColorLocation: "",
+              entirelyColor: "",
+              braggedAboutHeirloom: "",
+              finerHeirloomLocation: "",
+              prizedHeirloomOwner: "",
+              prizedHeirloom: "",
+              scoffingWomanLocation: "",
+              scoffingWomanHeirloom: "",
+              valuableHeirloom: "",
+              nearSpillInstigatorLocation: "",
+              nearSpillDrink: "",
+              toaster: "",
+              toastDrink: "",
+              tableJumperLocation: "",
+              tableJumperDrink: "",
+              centerDrink: "",
+              storyTeller: "",
+              storyTellerLocation: "",
+              firstHeirloom: "",
+              secondHeirloom: "",
+              thirdHeirloom: "",
+              fourthHeirloom: ""
+         */
+
         Model model = new Model("Jindosh Riddle");
         IntVar[] people = model.intVarArray("People", 5, 0, 4);
         IntVar[] colors = model.intVarArray("Colors", 5, 0, 4);
@@ -183,156 +247,148 @@ public class SolveRiddleController
         model.allDifferent(drinks).post();
         model.allDifferent(locations).post();
         model.allDifferent(heirlooms).post();
+        
+        model.arithm(people[0], "=", personId(params.get("farLeftWoman"))).post();
 
-        // Finch is on the far left
-        model.arithm(people[0], "=", FINCH).post();
+        model.arithm(colors[1], "=", colorId(params.get("jacketColor"))).post();
 
-        // The red jacket is next to Finch (2nd seat along)
-        model.arithm(colors[1], "=", RED).post();
-
-        // Lady in blue is left of someone in purple
+        int leftColorId = colorId(params.get("pairLeftColor"));
+        int rightColorId = colorId(params.get("pairRightColor"));
         model.or(
                 model.and(
-                        model.arithm(colors[0], "=", BLUE),
-                        model.arithm(colors[1], "=", PURPLE)
+                        model.arithm(colors[0], "=", leftColorId),
+                        model.arithm(colors[1], "=", rightColorId)
                 ),
                 model.and(
-                        model.arithm(colors[1], "=", BLUE),
-                        model.arithm(colors[2], "=", PURPLE)
+                        model.arithm(colors[1], "=", leftColorId),
+                        model.arithm(colors[2], "=", rightColorId)
                 ),
                 model.and(
-                        model.arithm(colors[2], "=", BLUE),
-                        model.arithm(colors[3], "=", PURPLE)
+                        model.arithm(colors[2], "=", leftColorId),
+                        model.arithm(colors[3], "=", rightColorId)
                 ),
                 model.and(
-                        model.arithm(colors[3], "=", BLUE),
-                        model.arithm(colors[4], "=", PURPLE)
+                        model.arithm(colors[3], "=", leftColorId),
+                        model.arithm(colors[4], "=", rightColorId)
                 )
         ).post();
 
-        // Winslow is wearing white
-        matchValueIndices(model, colors, WHITE, people, WINSLOW);
+        matchValueIndices(model, colors, colorId(params.get("hatColor")), people, personId(params.get("hatOwner")));
 
-        // Woman in blue has wine
-        matchValueIndices(model, drinks, WINE, colors, BLUE);
+        matchValueIndices(model, drinks, drinkId(params.get("spilledDrink")), colors, colorId(params.get("spilledDrinkColor")));
 
-        // Absinthe is in the center
-        model.arithm(drinks[2], "=", ABSINTHE).post();
+        model.arithm(drinks[2], "=", drinkId(params.get("centerDrink"))).post();
 
-        // Contee is from Karnaca
-        matchValueIndices(model, locations, KARNACA, people, CONTEE);
+        matchValueIndices(model, locations, placeId(params.get("storyTellerLocation")), people, personId(params.get("storyTeller")));
 
-        // Woman in green is from Dabokva
-        matchValueIndices(model, colors, GREEN, locations, DABOKVA);
+        matchValueIndices(model, colors, colorId(params.get("entirelyColor")), locations, placeId(params.get("entirelyColorLocation")));
 
-        // Natsiou has the rum
-        matchValueIndices(model, people, NATSIOU, drinks, RUM);
+        matchValueIndices(model, people, personId(params.get("toaster")), drinks, drinkId(params.get("toastDrink")));
 
-        // Woman from Dunwall has beer
-        matchValueIndices(model, locations, DUNWALL, drinks, BEER);
+        matchValueIndices(model, locations, placeId(params.get("tableJumperLocation")), drinks, drinkId(params.get("tableJumperDrink")));
 
-        // Marcolla has the Snuff Tin
-        matchValueIndices(model, people, MARCOLLA, heirlooms, TIN);
+        matchValueIndices(model, people, personId(params.get("prizedHeirloomOwner")), heirlooms, itemId(params.get("prizedHeirloom")));
 
-        // Woman from Fraeport has a ring
-        matchValueIndices(model, locations, FRAEPORT, heirlooms, RING);
+        matchValueIndices(model, locations, placeId(params.get("scoffingWomanLocation")), heirlooms, itemId(params.get("scoffingWomanHeirloom")));
 
-        // Woman from Baleton sits next to someone with the Medal
+        int nearSpillInstigatorLocationId = placeId(params.get("nearSpillInstigatorLocation"));
+        int valuableHeirloomId = itemId(params.get("valuableHeirloom"));
         model.or(
                 model.and(
-                        model.arithm(locations[0], "=", BALETON),
-                        model.arithm(heirlooms[1], "=", MEDAL)
+                        model.arithm(locations[0], "=", nearSpillInstigatorLocationId),
+                        model.arithm(heirlooms[1], "=", valuableHeirloomId)
                 ),
                 model.and(
-                        model.arithm(locations[1], "=", BALETON),
+                        model.arithm(locations[1], "=", nearSpillInstigatorLocationId),
                         model.or(
-                                model.arithm(heirlooms[0], "=", MEDAL),
-                                model.arithm(heirlooms[2], "=", MEDAL)
+                                model.arithm(heirlooms[0], "=", valuableHeirloomId),
+                                model.arithm(heirlooms[2], "=", valuableHeirloomId)
                         )
                 ),
                 model.and(
-                        model.arithm(locations[2], "=", BALETON),
+                        model.arithm(locations[2], "=", nearSpillInstigatorLocationId),
                         model.or(
-                                model.arithm(heirlooms[1], "=", MEDAL),
-                                model.arithm(heirlooms[3], "=", MEDAL)
+                                model.arithm(heirlooms[1], "=", valuableHeirloomId),
+                                model.arithm(heirlooms[3], "=", valuableHeirloomId)
                         )
                 ),
                 model.and(
-                        model.arithm(locations[3], "=", BALETON),
+                        model.arithm(locations[3], "=", nearSpillInstigatorLocationId),
                         model.or(
-                                model.arithm(heirlooms[2], "=", MEDAL),
-                                model.arithm(heirlooms[4], "=", MEDAL)
+                                model.arithm(heirlooms[2], "=", valuableHeirloomId),
+                                model.arithm(heirlooms[4], "=", valuableHeirloomId)
                         )
                 ),
                 model.and(
-                        model.arithm(locations[4], "=", BALETON),
-                        model.arithm(heirlooms[3], "=", MEDAL)
+                        model.arithm(locations[4], "=", nearSpillInstigatorLocationId),
+                        model.arithm(heirlooms[3], "=", valuableHeirloomId)
                 )
         ).post();
 
-        // Woman from Baleton sits next to someone with whiskey
+        int nearSpillDrinkId = drinkId(params.get("nearSpillDrink"));
         model.or(
                 model.and(
-                        model.arithm(locations[0], "=", BALETON),
-                        model.arithm(drinks[1], "=", WHISKEY)
+                        model.arithm(locations[0], "=", nearSpillInstigatorLocationId),
+                        model.arithm(drinks[1], "=", nearSpillDrinkId)
                 ),
                 model.and(
-                        model.arithm(locations[1], "=", BALETON),
+                        model.arithm(locations[1], "=", nearSpillInstigatorLocationId),
                         model.or(
-                                model.arithm(drinks[0], "=", WHISKEY),
-                                model.arithm(drinks[2], "=", WHISKEY)
+                                model.arithm(drinks[0], "=", nearSpillDrinkId),
+                                model.arithm(drinks[2], "=", nearSpillDrinkId)
                         )
                 ),
                 model.and(
-                        model.arithm(locations[2], "=", BALETON),
+                        model.arithm(locations[2], "=", nearSpillInstigatorLocationId),
                         model.or(
-                                model.arithm(drinks[1], "=", WHISKEY),
-                                model.arithm(drinks[3], "=", WHISKEY)
+                                model.arithm(drinks[1], "=", nearSpillDrinkId),
+                                model.arithm(drinks[3], "=", nearSpillDrinkId)
                         )
                 ),
                 model.and(
-                        model.arithm(locations[3], "=", BALETON),
+                        model.arithm(locations[3], "=", nearSpillInstigatorLocationId),
                         model.or(
-                                model.arithm(drinks[2], "=", WHISKEY),
-                                model.arithm(drinks[4], "=", WHISKEY)
+                                model.arithm(drinks[2], "=", nearSpillDrinkId),
+                                model.arithm(drinks[4], "=", nearSpillDrinkId)
                         )
                 ),
                 model.and(
-                        model.arithm(locations[4], "=", BALETON),
-                        model.arithm(drinks[3], "=", WHISKEY)
+                        model.arithm(locations[4], "=", nearSpillInstigatorLocationId),
+                        model.arithm(drinks[3], "=", nearSpillDrinkId)
                 )
         ).post();
 
-        // Woman with Bird sits next to someone from Dabokva
+        int braggedAboutHeirloomId = itemId(params.get("braggedAboutHeirloom"));
+        int finerHeirloomLocationId = placeId(params.get("finerHeirloomLocation"));
         model.or(
                 model.and(
-                        model.arithm(heirlooms[0], "=", BIRD),
-                        model.arithm(locations[1], "=", DABOKVA)
+                        model.arithm(heirlooms[0], "=", braggedAboutHeirloomId),
+                        model.arithm(locations[1], "=", finerHeirloomLocationId)
                 ),
                 model.and(
-                        model.arithm(heirlooms[1], "=", BIRD),
+                        model.arithm(heirlooms[1], "=", braggedAboutHeirloomId),
                         model.or(
-                                model.arithm(locations[0], "=", DABOKVA),
-                                model.arithm(locations[2], "=", DABOKVA)
+                                model.arithm(locations[0], "=", finerHeirloomLocationId),
+                                model.arithm(locations[2], "=", finerHeirloomLocationId)
                         )
                 ),
                 model.and(
-                        model.arithm(heirlooms[2], "=", BIRD),
+                        model.arithm(heirlooms[2], "=", braggedAboutHeirloomId),
                         model.or(
-                                model.arithm(locations[1], "=", DABOKVA),
-                                model.arithm(locations[3], "=", DABOKVA)
+                                model.arithm(locations[1], "=", finerHeirloomLocationId),
+                                model.arithm(locations[3], "=", finerHeirloomLocationId)
                         )
                 ),
                 model.and(
-                        model.arithm(heirlooms[3], "=", BIRD),
+                        model.arithm(heirlooms[3], "=", braggedAboutHeirloomId),
                         model.or(
-                                model.arithm(locations[2], "=", DABOKVA),
-                                model.arithm(locations[4], "=", DABOKVA)
+                                model.arithm(locations[2], "=", finerHeirloomLocationId),
+                                model.arithm(locations[4], "=", finerHeirloomLocationId)
                         )
                 ),
                 model.and(
-                        model.arithm(heirlooms[4], "=", BIRD),
-                        model.arithm(locations[3], "=", DABOKVA)
+                        model.arithm(heirlooms[4], "=", braggedAboutHeirloomId),
+                        model.arithm(locations[3], "=", finerHeirloomLocationId)
                 )
         ).post();
 
