@@ -133,7 +133,7 @@ class JindoshRiddle extends React.Component {
           <p>wore a jaunty {hatColorSelect} hat. {farLeftWomanSelect} was at the far left, next to the</p>
           <p>guest wearing a {jacketColorSelect} jacket. The lady in {pairLeftColorSelect} sat left of someone in {pairRightColorSelect}. I</p>
           <p>remember that {spilledDrinkColorSelect} outfit because the woman spilled her {spilledDrinkSelect} all over</p>
-          <p>it. The traveler from {entirelyColorLocationSelect} was dressed entirely in {entirelyColorSelect} When one of</p>
+          <p>it. The traveler from {entirelyColorLocationSelect} was dressed entirely in {entirelyColorSelect}. When one of</p>
           <p>the dinner guests bragged about her {braggedAboutHeirloomSelect}, the woman next to her said</p>
           <p>they were finer in {finerHeirloomLocationSelect} where she lived.</p>
           <br/>
