@@ -4,12 +4,15 @@ import "./RiddleSelect.css";
 
 class RiddleSelect extends React.Component {
   render() {
-    const options = this.props.options.map((opt, idx) => {
-      return <option key={idx}>{opt}</option>;
+    let options = this.props.options.map((opt, idx) => {
+      return <option key={idx} value={opt}>{opt}</option>;
     });
     return (
-      <select className="riddle-select">
-        <option />
+      <select
+        className="riddle-select"
+        value={this.props.value}
+        onChange={evt => this.props.onChange(evt)}
+      >
         {options}
       </select>
     );
