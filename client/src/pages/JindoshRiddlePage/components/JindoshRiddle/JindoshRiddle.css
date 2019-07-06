@@ -11,6 +11,7 @@
   color: #FFFFFF;
   font-size: 30px;
   font-style: italic;
+  font-family: "Times New Roman";
 }
 
 .jindosh-riddle-text {
@@ -25,4 +26,5 @@
   color: #FFFFFF;
   font-size: 20px;
   font-style: italic;
+  font-family: "Times New Roman";
 }
