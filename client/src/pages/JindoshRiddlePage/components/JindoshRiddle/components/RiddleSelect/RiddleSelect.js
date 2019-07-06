@@ -13,6 +13,7 @@ class RiddleSelect extends React.Component {
         value={this.props.value}
         onChange={evt => this.props.onChange(evt)}
       >
+        <option />
         {options}
       </select>
     );
