@@ -1,16 +1,13 @@
 package main.java.jindoshsolver;
 
+import java.util.List;
+
 public class SolveRiddle
 {
-    private final int value;
-
-    public SolveRiddle(int value)
-    {
-        this.value = value;
-    }
-
-    public int getValue()
-    {
-        return value;
-    }
+    public List<String> women;
+    public List<String> drinks;
+    public List<String> colors;
+    public List<String> locations;
+    public List<String> heirlooms;
+    public boolean found;
 }

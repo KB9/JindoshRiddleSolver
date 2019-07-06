@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -199,7 +201,7 @@ public class SolveRiddleController
     }
 
     @RequestMapping(value = "/solve", method = RequestMethod.GET)
-    public SolveRiddle solveRiddle(@RequestParam Map<String,String> params)
+    public main.java.jindoshsolver.SolveRiddle solveRiddle(@RequestParam Map<String,String> params)
     {
         /*
               hatOwner: "",
@@ -247,7 +249,7 @@ public class SolveRiddleController
         model.allDifferent(drinks).post();
         model.allDifferent(locations).post();
         model.allDifferent(heirlooms).post();
-        
+
         model.arithm(people[0], "=", personId(params.get("farLeftWoman"))).post();
 
         model.arithm(colors[1], "=", colorId(params.get("jacketColor"))).post();
@@ -393,50 +395,29 @@ public class SolveRiddleController
         ).post();
 
         Solver solver = model.getSolver();
-        int count = 0;
-        while (solver.solve())
+        if (solver.solve())
         {
-            System.out.println("SOLUTION #" + count + ":");
+            SolveRiddle solution = new SolveRiddle();
+            solution.found = true;
 
-            System.out.print("People: " + person(people[0].getValue()));
-            for (int seat = 1; seat < people.length; seat++)
-            {
-                System.out.print(", " + person(people[seat].getValue()));
-            }
-            System.out.println();
+            solution.women = new ArrayList<>();
+            for (IntVar person : people) solution.women.add(person(person.getValue()));
+            solution.drinks = new ArrayList<>();
+            for (IntVar drink : drinks) solution.drinks.add(drink(drink.getValue()));
+            solution.colors = new ArrayList<>();
+            for (IntVar color : colors) solution.colors.add(color(color.getValue()));
+            solution.locations = new ArrayList<>();
+            for (IntVar location : locations) solution.locations.add(place(location.getValue()));
+            solution.heirlooms = new ArrayList<>();
+            for (IntVar heirloom : heirlooms) solution.heirlooms.add(item(heirloom.getValue()));
 
-            System.out.print("Colors: " + color(colors[0].getValue()));
-            for (int seat = 1; seat < colors.length; seat++)
-            {
-                System.out.print(", " + color(colors[seat].getValue()));
-            }
-            System.out.println();
-
-            System.out.print("Drinks: " + drink(drinks[0].getValue()));
-            for (int seat = 1; seat < drinks.length; seat++)
-            {
-                System.out.print(", " + drink(drinks[seat].getValue()));
-            }
-            System.out.println();
-
-            System.out.print("Locations: " + place(locations[0].getValue()));
-            for (int seat = 1; seat < locations.length; seat++)
-            {
-                System.out.print(", " + place(locations[seat].getValue()));
-            }
-            System.out.println();
-
-            System.out.print("Heirlooms: " + item(heirlooms[0].getValue()));
-            for (int seat = 1; seat < heirlooms.length; seat++)
-            {
-                System.out.print(", " + item(heirlooms[seat].getValue()));
-            }
-            System.out.println();
-
-            System.out.println();
-            count++;
+            return solution;
         }
-
-        return new SolveRiddle(1337);
+        else
+        {
+            SolveRiddle solution = new SolveRiddle();
+            solution.found = false;
+            return solution;
+        }
     }
 }
