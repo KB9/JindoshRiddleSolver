@@ -11,6 +11,19 @@
   flex-wrap: nowrap;
 }
 
-.jindosh-riddle-page > * {
+.jindosh-riddle-page-content {
   margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+}
+
+.jindosh-riddle-page-solution-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  height: 100%;
+  margin-left: 50px;
 }

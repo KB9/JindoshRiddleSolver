@@ -114,7 +114,7 @@ class JindoshRiddle extends React.Component {
       .then(this.checkStatus)
       .then(this.parseJSON)
       .then(result => {
-        console.log(result);
+        this.props.onSolutionFound(result);
       });
   }
 
