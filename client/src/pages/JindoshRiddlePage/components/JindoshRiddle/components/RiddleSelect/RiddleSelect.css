@@ -1,0 +1,12 @@
+.riddle-select {
+  font-size: 20px;
+  font-style: italic;
+  font-family: "Times New Roman";
+  color: #FFFFFF;
+  background-color: #000000;
+  border-color: #333333;
+}
+
+.riddle-select select {
+  display: none;
+}
