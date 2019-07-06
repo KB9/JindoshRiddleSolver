@@ -2,7 +2,6 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://kb9.github.io/JindoshRiddleSolver",
   "proxy": "http://localhost:3001",
   "dependencies": {
     "gh-pages": "^2.0.1",
